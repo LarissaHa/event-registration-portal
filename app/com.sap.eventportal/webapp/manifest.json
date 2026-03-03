@@ -17,7 +17,7 @@
     },
     "dataSources": {
       "mainService": {
-        "uri": "/event-service/",
+        "uri": "/odata/v4/event/",
         "type": "OData",
         "settings": {
           "annotations": [],
