@@ -1,0 +1,4 @@
+ID;event_ID;employeeID;employeeName;employeeEmail;employeeDepartment;registrationDate;status;isCancelled
+d0e1f2a3-b4c5-4d5e-8f9a-0b1c2d3e4f5a;a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d;EMP001;Sarah Johnson;sarah.johnson@company.com;Marketing;2025-03-01T10:00:00Z;Registered;false
+e1f2a3b4-c5d6-4e5f-8a9b-0c1d2e3f4a5b;a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d;EMP003;Jennifer Chen;jennifer.chen@company.com;IT;2025-03-02T14:30:00Z;Registered;false
+f2a3b4c5-d6e7-4f5a-8b9c-0d1e2f3a4b5c;b2c3d4e5-f6a7-4b5c-8d9e-0f1a2b3c4d5e;EMP004;Michael Brown;michael.brown@company.com;Sales;2025-03-03T09:15:00Z;Registered;false

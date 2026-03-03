@@ -1,0 +1,6 @@
+ID;title;description;startDateTime;endDateTime;location;capacity;category;organizerID;organizerName;organizerEmail;isCancelled
+a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d;UI5 Advanced Workshop;Deep dive into advanced UI5 development techniques and best practices;2025-04-15T09:00:00Z;2025-04-15T17:00:00Z;Building A - Room 301;30;Training;EMP002;Marcus Williams;marcus.williams@company.com;false
+b2c3d4e5-f6a7-4b5c-8d9e-0f1a2b3c4d5e;Team Building Event;Fun outdoor activities and team bonding exercises;2025-04-20T10:00:00Z;2025-04-20T16:00:00Z;City Park - Main Area;50;Team Event;EMP005;Lisa Anderson;lisa.anderson@company.com;false
+c3d4e5f6-a7b8-4c5d-8e9f-0a1b2c3d4e5f;SAP CAP Introduction;Introduction to Cloud Application Programming Model;2025-05-05T14:00:00Z;2025-05-05T16:00:00Z;Building B - Conference Room;25;Training;EMP002;Marcus Williams;marcus.williams@company.com;false
+d4e5f6a7-b8c9-4d5e-8f9a-0b1c2d3e4f5a;Leadership Workshop;Developing leadership skills for managers;2025-05-10T09:00:00Z;2025-05-10T12:00:00Z;Building A - Auditorium;40;Workshop;EMP005;Lisa Anderson;lisa.anderson@company.com;false
+e5f6a7b8-c9d0-4e5f-8a9b-0c1d2e3f4a5b;Product Demo Day;Showcase of new product features and roadmap;2025-05-15T13:00:00Z;2025-05-15T15:00:00Z;Building C - Innovation Lab;60;Workshop;EMP002;Marcus Williams;marcus.williams@company.com;false

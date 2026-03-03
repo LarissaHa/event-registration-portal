@@ -1,0 +1,71 @@
+<mvc:View
+    controllerName="com.sap.eventportal.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Page id="eventListPage" title="Event Registration Portal">
+        <customHeader>
+            <Bar>
+                <contentLeft>
+                    <Title text="Event Registration Portal" level="H1"/>
+                </contentLeft>
+                <contentRight>
+                    <Button text="Events" press=".onNavToEvents"/>
+                    <Button text="My Registrations" press=".onNavToMyRegistrations"/>
+                    <Button text="Organizer Dashboard" press=".onNavToOrganizer" visible="{= ${device>/system/phone} === false }"/>
+                </contentRight>
+            </Bar>
+        </customHeader>
+        <content>
+            <VBox class="sapUiSmallMargin">
+                <SearchField
+                    id="searchField"
+                    placeholder="Search events by title or description"
+                    width="100%"
+                    search=".onSearch"/>
+                <HBox class="sapUiTinyMarginTop">
+                    <ComboBox
+                        id="categoryFilter"
+                        placeholder="Filter by Category"
+                        width="200px"
+                        selectionChange=".onFilterCategory">
+                        <items>
+                            <core:Item key="" text="All Categories"/>
+                            <core:Item key="Training" text="Training"/>
+                            <core:Item key="Team Event" text="Team Event"/>
+                            <core:Item key="Workshop" text="Workshop"/>
+                        </items>
+                    </ComboBox>
+                    <Input
+                        id="locationFilter"
+                        placeholder="Filter by Location"
+                        width="200px"
+                        class="sapUiTinyMarginBegin"
+                        change=".onFilterLocation"/>
+                </HBox>
+                <List
+                    id="eventList"
+                    items="{
+                        path: '/Events',
+                        parameters: {
+                            $expand: 'registrations'
+                        }
+                    }"
+                    mode="SingleSelectMaster"
+                    selectionChange=".onEventSelect">
+                    <StandardListItem
+                        title="{title}"
+                        description="{description}"
+                        info="{= ${capacity} - ${registrations/$count} } seats available"
+                        infoState="{= (${capacity} - ${registrations/$count}) &lt; 5 ? 'Warning' : 'None' }"
+                        type="Active">
+                        <customData>
+                            <core:CustomData key="eventId" value="{ID}"/>
+                        </customData>
+                    </StandardListItem>
+                </List>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

@@ -1,0 +1,5 @@
+ID;event_ID;questionText;questionType;isRequired;choiceOptions
+f6a7b8c9-d0e1-4f5a-8b9c-0d1e2f3a4b5c;a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d;Do you have any dietary restrictions?;Text;false;
+a7b8c9d0-e1f2-4a5b-8c9d-0e1f2a3b4c5d;a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d;What is your experience level with UI5?;SingleChoice;true;["Beginner","Intermediate","Advanced"]
+b8c9d0e1-f2a3-4b5c-8d9e-0f1a2b3c4d5e;b2c3d4e5-f6a7-4b5c-8d9e-0f1a2b3c4d5e;T-shirt size;SingleChoice;true;["S","M","L","XL","XXL"]
+c9d0e1f2-a3b4-4c5d-8e9f-0a1b2c3d4e5f;b2c3d4e5-f6a7-4b5c-8d9e-0f1a2b3c4d5e;Any food allergies?;Text;false;
