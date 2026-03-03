@@ -1,0 +1,114 @@
+<mvc:View
+    controllerName="com.sap.eventportal.controller.ParticipantList"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Page 
+        id="participantListPage" 
+        title="Participants"
+        showNavButton="true"
+        navButtonPress=".onNavBack">
+        <customHeader>
+            <Bar>
+                <contentLeft>
+                    <Button icon="sap-icon://nav-back" press=".onNavBack"/>
+                </contentLeft>
+                <contentMiddle>
+                    <Title text="Event Participants" level="H1"/>
+                </contentMiddle>
+            </Bar>
+        </customHeader>
+        <content>
+            <VBox class="sapUiSmallMargin">
+                <Panel headerText="Registration Statistics" class="sapUiSmallMarginBottom">
+                    <content>
+                        <VBox class="sapUiSmallMargin">
+                            <HBox justifyContent="SpaceBetween">
+                                <VBox>
+                                    <Label text="Total Registered"/>
+                                    <Text text="{statistics>/totalRegistered}" class="sapUiLargeMarginTop">
+                                        <customData>
+                                            <core:CustomData key="style" value="font-size: 2em; font-weight: bold;"/>
+                                        </customData>
+                                    </Text>
+                                </VBox>
+                                <VBox>
+                                    <Label text="Available Seats"/>
+                                    <Text text="{statistics>/availableSeats}" class="sapUiLargeMarginTop">
+                                        <customData>
+                                            <core:CustomData key="style" value="font-size: 2em; font-weight: bold;"/>
+                                        </customData>
+                                    </Text>
+                                </VBox>
+                                <VBox>
+                                    <Label text="Registration Rate"/>
+                                    <Text text="{statistics>/registrationRate}%" class="sapUiLargeMarginTop">
+                                        <customData>
+                                            <core:CustomData key="style" value="font-size: 2em; font-weight: bold;"/>
+                                        </customData>
+                                    </Text>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+                    </content>
+                </Panel>
+                
+                <Table
+                    id="participantsTable"
+                    items="{
+                        path: '/Registrations',
+                        parameters: {
+                            $filter: 'isCancelled eq false'
+                        }
+                    }"
+                    mode="None">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <Title text="Participant List" level="H2"/>
+                            <ToolbarSpacer/>
+                            <Button 
+                                text="Export to Excel" 
+                                icon="sap-icon://excel-attachment"
+                                press=".onExportExcel"/>
+                            <Button 
+                                text="Export to CSV" 
+                                icon="sap-icon://download"
+                                press=".onExportCSV"/>
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column width="25%">
+                            <Text text="Name"/>
+                        </Column>
+                        <Column width="25%">
+                            <Text text="Email"/>
+                        </Column>
+                        <Column width="20%">
+                            <Text text="Department"/>
+                        </Column>
+                        <Column width="15%">
+                            <Text text="Registration Date"/>
+                        </Column>
+                        <Column width="15%">
+                            <Text text="Status"/>
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="{employeeName}"/>
+                                <Text text="{employeeEmail}"/>
+                                <Text text="{employeeDepartment}"/>
+                                <Text text="{path: 'registrationDate', type: 'sap.ui.model.type.DateTime', formatOptions: {pattern: 'dd.MM.yyyy'}}"/>
+                                <ObjectStatus 
+                                    text="{status}"
+                                    state="Success"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

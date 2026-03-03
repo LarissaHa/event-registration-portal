@@ -1,0 +1,148 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    <Dialog
+        id="eventDialog"
+        title="Create New Event"
+        contentWidth="600px"
+        contentHeight="80%">
+        <content>
+            <VBox class="sapUiSmallMargin">
+                <f:SimpleForm
+                    editable="true"
+                    layout="ResponsiveGridLayout"
+                    labelSpanXL="4"
+                    labelSpanL="4"
+                    labelSpanM="4"
+                    emptySpanXL="0"
+                    emptySpanL="0"
+                    emptySpanM="0"
+                    columnsXL="1"
+                    columnsL="1"
+                    columnsM="1">
+                    <f:content>
+                        <Label text="Title" required="true"/>
+                        <Input 
+                            value="{eventData>/title}"
+                            placeholder="Enter event title"
+                            required="true"/>
+                        
+                        <Label text="Description"/>
+                        <TextArea 
+                            value="{eventData>/description}"
+                            rows="4"
+                            placeholder="Enter event description"/>
+                        
+                        <Label text="Start Date &amp; Time" required="true"/>
+                        <DateTimePicker 
+                            value="{eventData>/startDateTime}"
+                            placeholder="Select start date and time"
+                            required="true"/>
+                        
+                        <Label text="End Date &amp; Time"/>
+                        <DateTimePicker 
+                            value="{eventData>/endDateTime}"
+                            placeholder="Select end date and time"/>
+                        
+                        <Label text="Location" required="true"/>
+                        <Input 
+                            value="{eventData>/location}"
+                            placeholder="Enter location"
+                            required="true"/>
+                        
+                        <Label text="Capacity" required="true"/>
+                        <StepInput 
+                            value="{eventData>/capacity}"
+                            min="1"
+                            max="1000"
+                            step="5"
+                            required="true"/>
+                        
+                        <Label text="Category" required="true"/>
+                        <ComboBox 
+                            selectedKey="{eventData>/category}"
+                            required="true">
+                            <items>
+                                <core:Item key="Training" text="Training"/>
+                                <core:Item key="Team Event" text="Team Event"/>
+                                <core:Item key="Workshop" text="Workshop"/>
+                                <core:Item key="Other" text="Other"/>
+                            </items>
+                        </ComboBox>
+                    </f:content>
+                </f:SimpleForm>
+                
+                <VBox class="sapUiMediumMarginTop">
+                    <HBox justifyContent="SpaceBetween" class="sapUiSmallMarginBottom">
+                        <Label text="Custom Registration Questions" class="sapUiSmallMarginTop"/>
+                        <Button 
+                            text="Add Question" 
+                            icon="sap-icon://add"
+                            press=".onAddQuestion"
+                            enabled="{= ${eventData>/questions}.length &lt; 5 }"/>
+                    </HBox>
+                    
+                    <VBox items="{eventData>/questions}">
+                        <VBox class="sapUiSmallMarginBottom">
+                            <HBox justifyContent="SpaceBetween">
+                                <VBox width="90%">
+                                    <Label text="Question Text"/>
+                                    <Input 
+                                        value="{eventData>questionText}"
+                                        placeholder="Enter question"
+                                        width="100%"/>
+                                    
+                                    <HBox class="sapUiTinyMarginTop">
+                                        <VBox width="50%" class="sapUiTinyMarginEnd">
+                                            <Label text="Type"/>
+                                            <ComboBox 
+                                                selectedKey="{eventData>questionType}"
+                                                width="100%">
+                                                <items>
+                                                    <core:Item key="Text" text="Text"/>
+                                                    <core:Item key="SingleChoice" text="Single Choice"/>
+                                                    <core:Item key="MultipleChoice" text="Multiple Choice"/>
+                                                </items>
+                                            </ComboBox>
+                                        </VBox>
+                                        <VBox width="50%">
+                                            <Label text="Required"/>
+                                            <CheckBox 
+                                                selected="{eventData>isRequired}"
+                                                class="sapUiSmallMarginTop"/>
+                                        </VBox>
+                                    </HBox>
+                                    
+                                    <VBox visible="{= ${eventData>questionType} !== 'Text' }" class="sapUiTinyMarginTop">
+                                        <Label text="Choice Options (comma-separated)"/>
+                                        <Input 
+                                            value="{eventData>choiceOptions}"
+                                            placeholder="Option1, Option2, Option3"
+                                            width="100%"/>
+                                    </VBox>
+                                </VBox>
+                                <Button 
+                                    icon="sap-icon://delete"
+                                    type="Transparent"
+                                    press=".onRemoveQuestion"
+                                    tooltip="Remove Question"/>
+                            </HBox>
+                            <core:HTML content="&lt;hr style='margin: 10px 0; border: 0; border-top: 1px solid #ddd;'/&gt;"/>
+                        </VBox>
+                    </VBox>
+                    
+                    <Text 
+                        text="{= 'Questions: ' + ${eventData>/questions}.length + ' / 5' }"
+                        class="sapUiTinyMarginTop"/>
+                </VBox>
+            </VBox>
+        </content>
+        <beginButton>
+            <Button text="Save" type="Emphasized" press=".onSaveEvent"/>
+        </beginButton>
+        <endButton>
+            <Button text="Cancel" press=".onCloseEventDialog"/>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

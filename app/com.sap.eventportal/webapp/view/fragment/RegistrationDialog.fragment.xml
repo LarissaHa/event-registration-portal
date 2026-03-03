@@ -1,0 +1,64 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    <Dialog
+        id="registrationDialog"
+        title="Register for Event"
+        contentWidth="500px">
+        <content>
+            <VBox class="sapUiSmallMargin">
+                <f:SimpleForm
+                    editable="false"
+                    layout="ResponsiveGridLayout"
+                    labelSpanXL="4"
+                    labelSpanL="4"
+                    labelSpanM="4"
+                    emptySpanXL="0"
+                    emptySpanL="0"
+                    emptySpanM="0"
+                    columnsXL="1"
+                    columnsL="1"
+                    columnsM="1">
+                    <f:content>
+                        <Label text="Employee Name"/>
+                        <Text text="{registrationData>/employee/name}"/>
+                        
+                        <Label text="Email"/>
+                        <Text text="{registrationData>/employee/email}"/>
+                        
+                        <Label text="Department"/>
+                        <Text text="{registrationData>/employee/department}"/>
+                    </f:content>
+                </f:SimpleForm>
+                
+                <VBox visible="{= ${registrationData>/questions}.length &gt; 0 }">
+                    <Label text="Event Questions" class="sapUiSmallMarginTop sapUiSmallMarginBottom"/>
+                    <VBox items="{registrationData>/questions}">
+                        <VBox class="sapUiTinyMarginBottom">
+                            <Label text="{registrationData>questionText}" required="{registrationData>isRequired}"/>
+                            <Input
+                                value="{registrationData>/answers/${registrationData>ID}}"
+                                visible="{= ${registrationData>questionType} === 'Text' }"
+                                required="{registrationData>isRequired}"/>
+                            <ComboBox
+                                selectedKey="{registrationData>/answers/${registrationData>ID}}"
+                                visible="{= ${registrationData>questionType} === 'SingleChoice' }"
+                                required="{registrationData>isRequired}">
+                                <items>
+                                    <core:Item key="{registrationData>}" text="{registrationData>}"/>
+                                </items>
+                            </ComboBox>
+                        </VBox>
+                    </VBox>
+                </VBox>
+            </VBox>
+        </content>
+        <beginButton>
+            <Button text="Confirm" type="Emphasized" press=".onConfirmRegistration"/>
+        </beginButton>
+        <endButton>
+            <Button text="Cancel" press=".onCloseRegistrationDialog"/>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,81 @@
+<mvc:View
+    controllerName="com.sap.eventportal.controller.MyRegistrations"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Page id="myRegistrationsPage" title="My Registrations">
+        <customHeader>
+            <Bar>
+                <contentLeft>
+                    <Title text="My Registrations" level="H1"/>
+                </contentLeft>
+                <contentRight>
+                    <Button text="Events" press=".onNavToEvents"/>
+                    <Button text="My Registrations" press=".onNavToMyRegistrations"/>
+                    <Button text="Organizer" press=".onNavToOrganizer" visible="{device>/system/desktop}"/>
+                </contentRight>
+            </Bar>
+        </customHeader>
+        <content>
+            <Table
+                id="registrationsTable"
+                items="{
+                    path: '/Registrations',
+                    parameters: {
+                        $expand: 'event',
+                        $filter: 'employeeID eq \'EMP001\' and isCancelled eq false'
+                    }
+                }"
+                mode="None"
+                class="sapUiSmallMargin">
+                <columns>
+                    <Column width="30%">
+                        <Text text="Event Title"/>
+                    </Column>
+                    <Column width="15%">
+                        <Text text="Date"/>
+                    </Column>
+                    <Column width="20%">
+                        <Text text="Location"/>
+                    </Column>
+                    <Column width="10%">
+                        <Text text="Status"/>
+                    </Column>
+                    <Column width="25%">
+                        <Text text="Actions"/>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <ObjectIdentifier 
+                                title="{event/title}"
+                                text="{event/category}"/>
+                            <Text text="{path: 'event/startDateTime', type: 'sap.ui.model.type.DateTime', formatOptions: {pattern: 'dd.MM.yyyy HH:mm'}}"/>
+                            <Text text="{event/location}"/>
+                            <ObjectStatus 
+                                text="{status}"
+                                state="{= ${status} === 'Registered' ? 'Success' : 'None' }"/>
+                            <HBox>
+                                <Button 
+                                    text="View Details" 
+                                    press=".onViewEventDetail"
+                                    class="sapUiTinyMarginEnd"/>
+                                <Button 
+                                    text="Download Calendar" 
+                                    icon="sap-icon://calendar"
+                                    press=".onDownloadCalendar"
+                                    class="sapUiTinyMarginEnd"/>
+                                <Button 
+                                    text="Cancel" 
+                                    type="Reject"
+                                    press=".onCancelRegistration"/>
+                            </HBox>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Page>
+</mvc:View>

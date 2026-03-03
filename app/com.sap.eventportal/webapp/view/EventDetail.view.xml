@@ -1,0 +1,94 @@
+<mvc:View
+    controllerName="com.sap.eventportal.controller.EventDetail"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    <Page id="eventDetailPage" 
+          title="{title}"
+          showNavButton="true"
+          navButtonPress=".onNavBack">
+        <customHeader>
+            <Bar>
+                <contentLeft>
+                    <Button icon="sap-icon://nav-back" press=".onNavBack"/>
+                </contentLeft>
+                <contentMiddle>
+                    <Title text="{title}" level="H1"/>
+                </contentMiddle>
+                <contentRight>
+                    <Button text="Events" press=".onNavToEvents"/>
+                    <Button text="My Registrations" press=".onNavToMyRegistrations"/>
+                    <Button text="Organizer" press=".onNavToOrganizer" visible="{device>/system/desktop}"/>
+                </contentRight>
+            </Bar>
+        </customHeader>
+        <content>
+            <VBox class="sapUiSmallMargin">
+                <ObjectHeader
+                    title="{title}"
+                    number="{availableSeats}"
+                    numberUnit="seats available"
+                    numberState="{= ${availableSeats} &lt; 5 ? 'Error' : (${availableSeats} &lt; 10 ? 'Warning' : 'Success') }">
+                    <attributes>
+                        <ObjectAttribute title="Date" text="{path: 'startDateTime', type: 'sap.ui.model.type.DateTime', formatOptions: {pattern: 'dd.MM.yyyy HH:mm'}}"/>
+                        <ObjectAttribute title="Location" text="{location}"/>
+                        <ObjectAttribute title="Category" text="{category}"/>
+                        <ObjectAttribute title="Organizer" text="{organizerName}"/>
+                        <ObjectAttribute title="Capacity" text="{capacity}"/>
+                    </attributes>
+                </ObjectHeader>
+                
+                <VBox class="sapUiSmallMarginTop">
+                    <Label text="Description" class="sapUiTinyMarginBottom"/>
+                    <Text text="{description}"/>
+                </VBox>
+                
+                <HBox class="sapUiMediumMarginTop" justifyContent="SpaceBetween">
+                    <VBox>
+                        <Button
+                            id="registerButton"
+                            text="Register for Event"
+                            type="Emphasized"
+                            press=".onRegister"
+                            visible="{= !${isRegistered} &amp;&amp; ${availableSeats} &gt; 0 &amp;&amp; !${isCancelled} }"/>
+                        <Button
+                            id="cancelRegistrationButton"
+                            text="Cancel Registration"
+                            type="Reject"
+                            press=".onCancelRegistration"
+                            visible="{isRegistered}"/>
+                        <Text 
+                            text="You are already registered"
+                            visible="{isRegistered}"
+                            class="sapUiTinyMarginTop"/>
+                        <Text 
+                            text="Event is fully booked"
+                            visible="{= ${availableSeats} === 0 }"
+                            class="sapUiTinyMarginTop"/>
+                        <Text 
+                            text="Event is cancelled"
+                            visible="{isCancelled}"
+                            class="sapUiTinyMarginTop"/>
+                    </VBox>
+                    <Button
+                        text="Download Calendar"
+                        icon="sap-icon://calendar"
+                        press=".onDownloadCalendar"
+                        visible="{isRegistered}"/>
+                </HBox>
+                
+                <VBox class="sapUiMediumMarginTop" visible="{= ${questions}.length &gt; 0 }">
+                    <Label text="Event Questions" class="sapUiTinyMarginBottom"/>
+                    <List items="{questions}">
+                        <StandardListItem
+                            title="{questionText}"
+                            description="{= ${isRequired} ? 'Required' : 'Optional' }"
+                            info="{questionType}"/>
+                    </List>
+                </VBox>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

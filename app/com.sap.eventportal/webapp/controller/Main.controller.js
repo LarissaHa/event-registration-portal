@@ -56,72 +56,12 @@ sap.ui.define([
 
         onEventSelect: function(oEvent) {
             const oItem = oEvent.getParameter("listItem");
-            const sEventId = oItem.data("eventId");
+            const oContext = oItem.getBindingContext();
+            const sEventId = oContext.getProperty("ID");
             
-            // Navigate to event detail (for MVP, show in dialog)
-            this._showEventDetail(sEventId);
-        },
-
-        _showEventDetail: function(sEventId) {
-            const oModel = this.getView().getModel();
-            const sPath = `/Events(${sEventId})`;
-            
-            oModel.read(sPath, {
-                urlParameters: {
-                    $expand: "registrations,questions"
-                },
-                success: (oData) => {
-                    const availableSeats = oData.capacity - (oData.registrations?.length || 0);
-                    const isFullyBooked = availableSeats <= 0;
-                    
-                    const sDetails = `
-                        <strong>Title:</strong> ${oData.title}<br/>
-                        <strong>Description:</strong> ${oData.description || 'N/A'}<br/>
-                        <strong>Date:</strong> ${new Date(oData.startDateTime).toLocaleString()}<br/>
-                        <strong>Location:</strong> ${oData.location}<br/>
-                        <strong>Available Seats:</strong> ${availableSeats} / ${oData.capacity}<br/>
-                        <strong>Organizer:</strong> ${oData.organizerName}
-                    `;
-                    
-                    MessageBox.information(sDetails, {
-                        title: "Event Details",
-                        actions: isFullyBooked ? [MessageBox.Action.CLOSE] : [MessageBox.Action.CLOSE, "Register"],
-                        onClose: (sAction) => {
-                            if (sAction === "Register") {
-                                this._registerForEvent(sEventId);
-                            }
-                        }
-                    });
-                },
-                error: () => {
-                    MessageBox.error("Failed to load event details");
-                }
-            });
-        },
-
-        _registerForEvent: function(sEventId) {
-            const oModel = this.getView().getModel();
-            
-            // For MVP, using hardcoded employee
-            const oRegistration = {
-                event_ID: sEventId,
-                employeeID: "EMP001",
-                employeeName: "Sarah Johnson",
-                employeeEmail: "sarah.johnson@company.com",
-                employeeDepartment: "Marketing",
-                status: "Registered",
-                isCancelled: false
-            };
-            
-            oModel.create("/Registrations", oRegistration, {
-                success: () => {
-                    MessageToast.show("Successfully registered for event!");
-                    this.byId("eventList").getBinding("items").refresh();
-                },
-                error: (oError) => {
-                    const sMessage = oError.responseText || "Registration failed";
-                    MessageBox.error(sMessage);
-                }
+            // Navigate to event detail page
+            this.getRouter().navTo("eventDetail", {
+                eventId: sEventId
             });
         },
 
@@ -131,11 +71,11 @@ sap.ui.define([
         },
 
         onNavToMyRegistrations: function() {
-            MessageToast.show("My Registrations feature - Coming soon!");
+            this.getRouter().navTo("myRegistrations");
         },
 
         onNavToOrganizer: function() {
-            MessageToast.show("Organizer Dashboard feature - Coming soon!");
+            this.getRouter().navTo("organizerDashboard");
         }
     });
 });

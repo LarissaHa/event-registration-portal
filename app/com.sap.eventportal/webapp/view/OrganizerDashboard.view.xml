@@ -1,0 +1,107 @@
+<mvc:View
+    controllerName="com.sap.eventportal.controller.OrganizerDashboard"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Page id="organizerDashboardPage" title="Organizer Dashboard">
+        <customHeader>
+            <Bar>
+                <contentLeft>
+                    <Title text="Organizer Dashboard" level="H1"/>
+                </contentLeft>
+                <contentRight>
+                    <Button text="Events" press=".onNavToEvents"/>
+                    <Button text="My Registrations" press=".onNavToMyRegistrations"/>
+                    <Button text="Organizer" press=".onNavToOrganizer"/>
+                </contentRight>
+            </Bar>
+        </customHeader>
+        <content>
+            <VBox class="sapUiSmallMargin">
+                <Button 
+                    text="Create New Event" 
+                    type="Emphasized" 
+                    icon="sap-icon://add"
+                    press=".onCreateEvent"
+                    class="sapUiSmallMarginBottom"/>
+                
+                <Table
+                    id="organizerEventsTable"
+                    items="{
+                        path: '/Events',
+                        parameters: {
+                            $expand: 'registrations',
+                            $filter: 'organizerID eq \'EMP002\''
+                        }
+                    }"
+                    mode="None">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <Title text="My Events" level="H2"/>
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column width="25%">
+                            <Text text="Title"/>
+                        </Column>
+                        <Column width="15%">
+                            <Text text="Date"/>
+                        </Column>
+                        <Column width="15%">
+                            <Text text="Location"/>
+                        </Column>
+                        <Column width="10%">
+                            <Text text="Capacity"/>
+                        </Column>
+                        <Column width="10%">
+                            <Text text="Registered"/>
+                        </Column>
+                        <Column width="10%">
+                            <Text text="Status"/>
+                        </Column>
+                        <Column width="15%">
+                            <Text text="Actions"/>
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <ObjectIdentifier 
+                                    title="{title}"
+                                    text="{category}"/>
+                                <Text text="{path: 'startDateTime', type: 'sap.ui.model.type.DateTime', formatOptions: {pattern: 'dd.MM.yyyy HH:mm'}}"/>
+                                <Text text="{location}"/>
+                                <Text text="{capacity}"/>
+                                <Text text="{= ${registrations}.length }"/>
+                                <ObjectStatus 
+                                    text="{= ${isCancelled} ? 'Cancelled' : 'Active' }"
+                                    state="{= ${isCancelled} ? 'Error' : 'Success' }"/>
+                                <HBox>
+                                    <Button 
+                                        icon="sap-icon://edit" 
+                                        type="Transparent"
+                                        press=".onEditEvent"
+                                        tooltip="Edit Event"
+                                        class="sapUiTinyMarginEnd"/>
+                                    <Button 
+                                        icon="sap-icon://group" 
+                                        type="Transparent"
+                                        press=".onViewParticipants"
+                                        tooltip="View Participants"
+                                        class="sapUiTinyMarginEnd"/>
+                                    <Button 
+                                        icon="sap-icon://decline" 
+                                        type="Transparent"
+                                        press=".onCancelEvent"
+                                        tooltip="Cancel Event"
+                                        enabled="{= !${isCancelled} }"/>
+                                </HBox>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>
