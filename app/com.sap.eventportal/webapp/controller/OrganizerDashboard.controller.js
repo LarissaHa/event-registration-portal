@@ -102,11 +102,19 @@ sap.ui.define([
             }
             
             const oModel = this.getView().getModel();
+            
+            // If endDateTime is not set, use startDateTime + 2 hours
+            let endDateTime = oData.endDateTime;
+            if (!endDateTime) {
+                endDateTime = new Date(oData.startDateTime);
+                endDateTime.setHours(endDateTime.getHours() + 2);
+            }
+            
             const oEventData = {
                 title: oData.title,
-                description: oData.description,
-                startDateTime: oData.startDateTime.toISOString(),
-                endDateTime: oData.endDateTime ? oData.endDateTime.toISOString() : oData.startDateTime.toISOString(),
+                description: oData.description || "",
+                startDateTime: new Date(oData.startDateTime).toISOString(),
+                endDateTime: new Date(endDateTime).toISOString(),
                 location: oData.location,
                 capacity: parseInt(oData.capacity),
                 category: oData.category,
@@ -125,7 +133,13 @@ sap.ui.define([
                         this.byId("organizerEventsTable").getBinding("items").refresh();
                     },
                     error: (oError) => {
-                        const sMessage = JSON.parse(oError.responseText)?.error?.message || "Failed to update event";
+                        let sMessage = "Failed to update event";
+                        try {
+                            const oErrorResponse = JSON.parse(oError.responseText);
+                            sMessage = oErrorResponse.error.message || sMessage;
+                        } catch (e) {
+                            console.error("Error parsing error response:", e);
+                        }
                         MessageBox.error(sMessage);
                     }
                 });
@@ -138,7 +152,13 @@ sap.ui.define([
                         this.byId("organizerEventsTable").getBinding("items").refresh();
                     },
                     error: (oError) => {
-                        const sMessage = JSON.parse(oError.responseText)?.error?.message || "Failed to create event";
+                        let sMessage = "Failed to create event";
+                        try {
+                            const oErrorResponse = JSON.parse(oError.responseText);
+                            sMessage = oErrorResponse.error.message || sMessage;
+                        } catch (e) {
+                            console.error("Error parsing error response:", e);
+                        }
                         MessageBox.error(sMessage);
                     }
                 });
@@ -199,11 +219,9 @@ sap.ui.define([
                 onClose: (sAction) => {
                     if (sAction === MessageBox.Action.OK) {
                         const oModel = this.getView().getModel();
-                        oModel.callFunction("/cancelEvent", {
-                            method: "POST",
-                            urlParameters: {
-                                ID: oEventData.ID
-                            },
+                        oModel.update(`/Events(${oEventData.ID})`, {
+                            isCancelled: true
+                        }, {
                             success: () => {
                                 MessageToast.show("Event cancelled successfully");
                                 this.byId("organizerEventsTable").getBinding("items").refresh();
